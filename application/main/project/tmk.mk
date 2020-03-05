@@ -53,7 +53,7 @@ else
 endif
 
 ifeq (yes,$(strip $(COMMAND_ENABLE)))
-    SRC_FILES += $(COMMON_DIR)/command.c
+    SRC_FILES += $(APP_SRC_DIR)/keyboard/keyboard_command.c
     OPT_DEFS += -DCOMMAND_ENABLE
 endif
 
@@ -77,4 +77,7 @@ endif
 
 ifeq (yes,$(strip $(KEYMAP_SECTION_ENABLE)))
     OPT_DEFS += -DKEYMAP_SECTION_ENABLE
+endif
+ifeq (yes,$(strip $(RGBLIGHT_ENABLE)))
+    OPT_DEFS += -DRGBLIGHT_ENABLE
 endif

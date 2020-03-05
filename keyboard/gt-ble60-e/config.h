@@ -23,12 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* USB和蓝牙的显示参数 */
 #define VENDOR_ID 0x1209 /* USB VID */
 #define PRODUCT_ID 0x0514 /* USB PID */
-#define CONF_VENDOR_ID 0x0114 /* 配置项目内显示的VendorID */
-#define CONF_PRODUCT_ID 0x0514 /* 配置项目内显示的ProductID */
+#define CONF_VENDOR_ID 0x4366 /* 配置项目内显示的VendorID */
+#define CONF_PRODUCT_ID 0x0315 /* 配置项目内显示的ProductID */
 #define DEVICE_VER 0x0001 /* 硬件版本 */
 #define MANUFACTURER "Lotlab" /* 硬件制造商，用于蓝牙显示 */
-#define PRODUCT "BLE Keyboard" /* 硬件名称，用于USB和蓝牙显示 */
-#define MACADDR_SEPRATOR '_' /* 蓝牙名称后地址的分隔符。若不设置则不显示蓝牙名称后面的地址 */
+#define PRODUCT "GT BLE60" /* 硬件名词，用于蓝牙显示 */
+#define MACADDR_SEPRATOR ' ' /* 蓝牙名称后地址的分隔符。若不设置则不显示蓝牙名称后面的地址 */
 
 /* USB HID report parameter */
 #define KEYBOARD_EPSIZE 8 /* 键盘上传端点大小，请不要修改 */
@@ -40,17 +40,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // 键盘省电参数
 #define SLEEP_SLOW_TIMEOUT 15 // 键盘闲置多久后转入慢速扫描模式 (s)
-#define SLEEP_OFF_TIMEOUT 600 // 键盘闲置多久后转入自动关机 (s)
+#define SLEEP_OFF_TIMEOUT 1200 // 键盘闲置多久后转入自动关机 (s)
 #define KEYBOARD_SCAN_INTERVAL 1 // 键盘最小时间单位TICK (ms)
 #define KEYBOARD_FAST_SCAN_INTERVAL 10 // 通常模式下，多久扫描一次键盘 (ms)
 #define KEYBOARD_SLOW_SCAN_INTERVAL 100 // 慢速模式下，多久扫描一次键盘 (ms)
 #define LED_AUTOOFF_TIME 5 /* LED自动熄灭时长(s)，设为0则不自动熄灭 */
 
 // 键盘额外功能
-#define DYNAMIC_TX_POWER /* 启用自动发射功率调整 */
-#define PASSKEY_REQUIRED /* 需要输入配对码 */
+//#define DYNAMIC_TX_POWER /* 启用自动发射功率调整 */
+//#define PASSKEY_REQUIRED /* 需要输入配对码 */
 #define ENABLE_WATCHDOG /* 启用看门狗 */
-//#define HIGH_TX_POWER /* 更改发射功率到+4dBm */
+#define HIGH_TX_POWER /* 更改发射功率到+4dBm */
 #define MULTI_DEVICE_SWITCH  /*启用多设备切换 */
 #define KEYMAP_STORAGE /* 启用keymap存储 */
 // #define MACRO_BLOCKING_MODE /* 在宏播放时禁用其他按键输入 */
@@ -67,44 +67,52 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_MACRO
 //#define NO_ACTION_FUNCTION
 
-/* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
-#define LOCKING_SUPPORT_ENABLE
-/* Locking resynchronize hack */
-#define LOCKING_RESYNC_ENABLE
+// LED 配置
+#define LED_CAPS 4 // 21
+
+// ws2812 RGB 配置
+#define RGBLED_NUM 8 // 8
+#define RGB_DI_PIN 10 // 10
+#define RGBLIGHT_ANIMATIONS
+#define RGB_PWR_PIN 12 // P-mos
+//#define RGB_PWR_PIN_REVERSE 20 // N-mos
+
+// 3灯指示配置引脚
+#define LED_STATUS_BLE 7
+#define LED_STATUS_CHARGING 5
+#define LED_STATUS_USB 6
+#define LED_POSITIVE // LED上拉驱动
+// 独立硬件按钮
+#define POWER_BUTTON 3 // 3
+
+// USB UART 传输配置
+#define HAS_USB // 启用与CH554的通信支持
+#define UART_RXD 8 // UART_RX口IO 17
+#define UART_TXD 9 // UART_TX口IO 18
+//#define UART_DET 19 // UART 检测引脚，若此脚被拉低，则说明USB正在工作。若不配置则使用RX口作为检测引脚
+#define UART_BAUDRATE NRF_UART_BAUDRATE_115200 // 通信波特率，请不要修改
+
+// 电量检测配置
+#define BATTERY_ADC_PIN NRF_SAADC_INPUT_AIN0 // 电量检测引脚 Pin 2
+
+// 充电检测配置
+#define PIN_CHARGING !UCC1
+//#define PIN_STANDBY !UCC2
+
+// 按键阵列配置
+#define MATRIX_ROWS 5 /* 硬件阵列行数 */
+#define MATRIX_COLS 13 /* 硬件阵列列数 */
 
 /* key combination for command */
 #define IS_COMMAND() ( \
     keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)))
 
-// LED 配置
-#define LED_NUM 22
-#define LED_CAPS 21
-#define LED_SCLK 23
-#define LED_POSITIVE // LED上拉驱动
-
-// USB UART 传输配置
-#define HAS_USB // 启用与CH554的通信支持
-#define UART_RXD 17 // UART_RX口IO
-#define UART_TXD 18 // UART_TX口IO
-#define UART_DET 19 // UART 检测引脚，若此脚被拉低，则说明USB正在工作。若不配置则使用RX口作为检测引脚
-#define UART_BAUDRATE NRF_UART_BAUDRATE_115200 // 通信波特率，请不要修改
-
-// 电量检测配置
-#define BATTERY_ADC_PIN NRF_SAADC_INPUT_AIN0 // 电量检测引脚
-
-// 充电检测配置
-#define PIN_CHARGING !UCC1 // CH554的充电检测。当UCC1拉低时表示正在充电
-#define PIN_STANDBY !UCC2 // CH554的充电检测。当UCC2拉低时表示充电完成。若不配置则只使用PIN_CHARGING作为是否充电的检测标志
-
-// 按键阵列配置
-#define MATRIX_ROWS 5 /* 硬件阵列行数 */
-#define MATRIX_COLS 14 /* 硬件阵列列数 */
-static const uint8_t row_pin_array[MATRIX_ROWS] = { 25, 28, 29, 30, 26 };
-static const uint8_t column_pin_array[MATRIX_COLS] = { 16, 15, 14, 13, 12, 11, 27, 3, 4, 5, 6, 7, 8, 9 };
+static const uint8_t row_pin_array[MATRIX_ROWS] = { 27, 26, 30, 29, 28 };
+static const uint8_t column_pin_array[MATRIX_COLS] = { 21, 22, 23, 24, 25, 20, 19, 18, 17, 16, 15, 14, 13 };
 #define ROW_IN // 键盘阵列的二极管方向是从COL->ROW
 
 /* define if matrix has ghost */
 // #define MATRIX_HAS_GHOST /* 按键阵列是否出现Ghost Key，若没有加二极管则需要启用这个项目 */
 
 #define DEBOUNCE 5 /* 硬件消抖次数，设置为0则不消抖 */
-#define MATRIX_SCAN_DELAY_CYCLE 36 /* 按键扫描等待IO稳定的延时时长 */
+#define MATRIX_SCAN_DELAY_CYCLE 48 /* 按键扫描等待IO稳定的延时时长 */
